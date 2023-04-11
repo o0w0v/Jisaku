@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <CookieProcessor sameSiteCookies="strict" />
+        <link rel="icon" href="{% static 'img/favicon.ico' %}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <meta name="keywords" content="自作PC見積もり,自作PC,自作PC 見積もり,自作PC　見積もり">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+        <script src="{% static 'dist/overlay.js' %}"></script>
+        <title>自作PC見積もり</title>
+        <link rel="stylesheet" href="{% static 'css/usage.css' %}">
+    </head>
+    <body>
+        <header>
+            <h1><a href="/Jisaku/pages"><img src = "{% static 'img/header.gif' %}" alt="自作PC作成計画"></a></h1>
+            <div class="ret"><a href="/Jisaku/pages">戻る</a></div>
+        </header>
+        <main class="main">
+            <p>使い方の説明を簡単に</p>
+            <br></br>
+            <img src = "{% static 'img/a.jpg' %}">
+            <br></br>
+            <p>選択してくださいと書かれているボタンを押すと、一覧が表示されます</p>
+            <br></br>
+            <img src = "{% static 'img/b.jpg' %}">
+            <br></br>
+            <p>選択すると、総額と消費電力(参考)が計算されます</p>
+            <p>下の方に表示されるのでスクロールしてみてください</p>
+            <p>(自作PC作成計画は開発途中(ベータ版)です。)</p>
+            <br></br>
+            <p class="caution">使用する際の注意事項</p>
+            <p>自作PC作成計画で得られる情報について一切責任は負いません。</p>
+            <p>実際に購入される場合は、よく確認してください。</p>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+    <footer>
+        <h1>Webページについて何かあればTwitter <a href="https://twitter.com/Geforce_rtx_">@Geforce_RTX_</a>まで</h1>
+    </footer>
+</html>

@@ -1,0 +1,2232 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" href="{% static 'img/favicon.ico' %}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <meta name="keywords" content="自作PC見積もり,自作PC,自作PC 見積もり,自作PC　見積もり">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+        <script src="{% static 'dist/overlay.js' %}"></script>
+        <title>自作PC見積もり</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <script>
+            function usr(cpuData,caseData,coolerData,displayData,gpuData,hddData,mbData,memoryData,pwData,ssdData){
+                this.cpuData = cpuData;
+                this.caseData = caseData;
+                this.coolerData = coolerData;
+                this.displayData = displayData;
+                this.gpuData = gpuData;
+                this.hddData = hddData;
+                this.mbData = mbData;
+                this.memoryData = memoryData;
+                this.pwData = pwData;
+                this.ssdData = ssdData;
+            }
+            
+            function cpu(price,socket,watt){
+                this.price = price;
+                this.socket = socket;
+                this.watt = watt;
+            }
+            function cpucooler(price,socket){
+                this.price = price;
+                this.socket = socket;
+            }
+            function casec(price){
+                this.price = price;
+            }
+            function MB(price,socket,watt,sizenum,mem){
+                this.price = price;
+                this.socket = socket;
+                this.watt = watt;
+                this.sizenum = sizenum;
+                this.mem = mem;
+            }
+            function GPU(price,watt){
+                this.price = price;
+                this.watt = watt;
+            }
+            function HDD(price,watt){
+                this.price = price;
+                this.watt = watt;
+            }
+            function Display(price){
+                this.price = price;
+            }
+            function Memory(price,type){
+                this.price = price;
+                this.type = type;
+            }
+            function PW(price,watt){
+                this.price = price;
+                this.watt = watt;
+            }
+            function SSD(price,watt){
+                this.price = price;
+                this.watt = watt;
+            }
+
+
+            var initialcpu = new cpu(0,"",0);
+            var initialcooler = new cpucooler(0,"")
+            var initialcase = new casec(0);
+            var initialmb = new MB(0,"",0,0,"");
+            var initialdisplay = new Display(0);
+            var initialgpu = new GPU(0,0);
+            var initialHDD = new HDD(0,0);
+            var initialMem = new Memory(0,"");
+            var initialPW = new PW(0,0);
+            var initialSSD = new SSD(0,0);
+            
+            var usrdata = new usr(initialcpu,initialcase,initialcooler,initialdisplay,initialgpu,initialHDD,initialmb,initialMem,initialPW,initialSSD);
+
+            function appCPU(result,num,j) {
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsCPU";
+                        linked.id = 'submit'+'0';
+                        $("#menu01").append(
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt1';
+                    text_element .className = 'contents1';
+                    linked.textContent = result["name"]+"/"+result["pricestr"]+"/"+result["core"]+result["thread"]+"スレッド/"+"クロック:"+result["clk"]+"/"+result["mxclk"]+"/"+"ソケット:"+result["socket"]+"/TDP:"+result["watt"];
+                    linked.dataset.name = result["name"]+"/"+result["pricestr"]+"/"+result["core"]+result["thread"]+"スレッド/"+"ソケット:"+result["socket"]+"/TDP:"+result["watt"];
+                    linked.className = "setContentsCPU";
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu01").append(
+                        $(text_element).append(linked).trigger("create")
+                    ).trigger("create");
+                    linked.append(img_element);
+
+                });
+            }
+            function appCPUcooler(result,num,j) {
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsCooler";
+                        linked.id = 'submit'+'0';
+                        $("#menu02").append(
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt2';
+                    text_element .className = 'contents2';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsCooler";
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu02").append(
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }
+            function appMB(result,num,j) {
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsMB";
+                        linked.id = 'submit'+'0';
+                        $("#menu03").append(
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt3';
+                    text_element .className = 'contents3';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsMB";
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu03").append(
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }
+            function appGPU(result,num,j) {
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsGPU";
+                        linked.id = 'submit'+'0';
+                        $("#menu04").append(
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt4';
+                    text_element .className = 'contents4';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsGPU";
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu04").append(
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }
+            function appMemory(result,num,j) {
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsMemory"; //変更箇所
+                        linked.id = 'submit'+'0';
+                        $("#menu05").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt5';
+                    text_element .className = 'contents5';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsMemory"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu05").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }
+            function appSSD(result,num,j) {
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsSSD"; //変更箇所
+                        linked.id = 'submit'+'0';
+                        $("#menu06").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt6';
+                    text_element .className = 'contents6';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsSSD"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu06").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }
+            function appHDD(result,num,j) {//変更箇所
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsHDD"; //変更箇所
+                        linked.id = 'submit'+'0';
+                        $("#menu07").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt7';
+                    text_element .className = 'contents7';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsHDD"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu07").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }
+            function appPW(result,num,j) {//変更箇所
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsPW"; //変更箇所
+                        linked.id = 'submit'+'0';
+                        $("#menu08").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt8';
+                    text_element .className = 'contents8';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsPW"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu08").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }            
+            function appCase(result,num,j) {//変更箇所
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsCase"; //変更箇所
+                        linked.id = 'submit'+'0';
+                        $("#menu09").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt9';
+                    text_element .className = 'contents9';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsCase"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu09").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }        
+            function appDisplay(result,num,j) {//変更箇所
+                
+                jQuery(function($){
+                    if(num==1){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submit'+'0';
+                        text_element .className = 'contents';
+                        linked.textContent = "選択を解除する";
+                        linked.dataset.name = "選択してください";
+                        linked.className = "setContentsDisplay"; //変更箇所
+                        linked.id = 'submit'+'0';
+                        $("#menu10").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                    }
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt10';
+                    text_element .className = 'contents10';
+                    linked.textContent = result["name"];
+                    linked.dataset.name = result["name"];
+                    linked.className = "setContentsDisplay"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+j
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu10").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                });
+            }     
+            
+            var result = JSON.parse('{{data_json|safe}}');
+            
+            for(let i = 0;i<10;i++){ //iの値を変える
+                for (let j = 0;j < result[i].length;j++){
+                    let num = 0;
+                    if(j== 0) {
+                        num = 1
+                    }
+                    let num2 = (j+1).toString()
+                    if (i==0){
+                        appCPU(result[i][j],num,num2)
+                    }else if(i==1){
+                        appCPUcooler(result[i][j],num,num2);
+                    }else if(i==2){
+                        appMB(result[i][j],num,num2);
+                    }else if(i==3){
+                        appGPU(result[i][j],num,num2);
+                    }else if(i==4){
+                        appMemory(result[i][j],num,num2);
+                    }else if(i==5){
+                        appSSD(result[i][j],num,num2);
+                    }else if(i==6){
+                        appHDD(result[i][j],num,num2);
+                    }else if(i==7){
+                        appPW(result[i][j],num,num2);
+                    }else if(i==8){
+                        appCase(result[i][j],num,num2);
+                    }else{
+                        appDisplay(result[i][j],num,num2);
+                    }
+                    //増やす
+                }
+            }
+
+            function addusrCPU(info){
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialcpu;
+                    usrdata.cpuData = ucpu;
+                    console.log(usrdata.cpuData.price)
+                }else{
+                    num -= 1;
+                    var wa = result[0][num]["watt"];
+                    wa.replace(" w","");
+                    var watnum = parseInt(wa) || 0;
+                    var ucpu = new cpu(result[0][num]["price"],result[0][num]["socket"],watnum);
+                    usrdata.cpuData = ucpu;
+                    console.log(usrdata.cpuData.price)
+                }
+            }
+            function addusrCPUcooler(info){
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialcooler;
+                    usrdata.coolerData = ucpu;
+                    //console.log(usrdata.coolerData.price)
+                }else{
+                    num -= 1;
+                    var ucpuc = new cpucooler(result[1][num]["price"],result[1][num]["socket"]);
+                    usrdata.coolerData = ucpuc;
+                }
+
+            }
+            function addusrMB(info){
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialmb;
+                    usrdata.mbData = ucpu;
+                }else{
+                    num -= 1;
+                    sizenum = 0;
+                    if(result[2][num]["size"]=="ATX"){
+                        sizenum = 2;
+                    }else if(result[2][num]["size"]=="MicroATX"){
+                        sizenum = 1
+                    }
+                    var ucpuc = new MB(result[2][num]["price"],result[2][num]["socket"],50,sizenum,result[2][num]["memory"]);
+                    usrdata.mbData = ucpuc;
+                }
+
+            }
+            function addusrGPU(info){
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                console.log(num)
+                if(num==0){
+                    var ucpu = initialgpu;
+                    console.log(ucpu.price)
+                    usrdata.gpuData = ucpu;
+                }else{
+                    num -= 1;
+                    var wa = result[3][num]["watt"];
+                    if(wa != "　")wa.replace(" W","");
+                    else wa = "0";
+                    var watnum = parseInt(wa);
+                    var ucpuc = new GPU(result[3][num]["price"],watnum);
+                    usrdata.gpuData = ucpuc;
+                }
+
+            }
+            function addusrMemory(info){
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialMem;//変更箇所
+                    usrdata.memoryData = ucpu;//変更箇所
+                    //console.log(usrdata.MemoryData.price)
+                }else{
+                    num -= 1;
+                    var ucpuc = new Memory(result[4][num]["price"],result[4][num]["spec"]);//変更箇所
+                    usrdata.memoryData = ucpuc;//変更箇所
+                }
+
+            }            
+            function addusrSSD(info){//変更箇所
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialSSD;//変更箇所
+                    usrdata.ssdData = ucpu;//変更箇所
+                    //console.log(usrdata.MemoryData.price)
+                }else{
+                    num -= 1;
+                    var ucpuc = new SSD(result[5][num]["price"],10);//変更箇所
+                    usrdata.ssdData = ucpuc;//変更箇所
+                }
+
+            }      
+            function addusrHDD(info){//変更箇所
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialHDD;//変更箇所
+                    usrdata.hddData = ucpu;//変更箇所
+                    //console.log(usrdata.MemoryData.price)
+                }else{
+                    num -= 1;
+                    var ucpuc = new HDD(result[6][num]["price"],10);//変更箇所
+                    usrdata.hddData = ucpuc;//変更箇所
+                }
+
+            }
+            function addusrPW(info){//変更箇所
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialPW;//変更箇所
+                    usrdata.pwData = ucpu;//変更箇所
+                    //console.log(usrdata.MemoryData.price)
+                }else{
+                    num -= 1;
+                    var wa = result[3][num]["watt"];
+                    if(wa != "　")wa.replace(" W","");
+                    else wa = "0";
+                    var watnum = parseInt(wa);
+                    var ucpuc = new PW(result[7][num]["price"],watnum);//変更箇所
+                    usrdata.pwData = ucpuc;//変更箇所
+                }
+
+            }
+            function addusrCase(info){//変更箇所
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialcase;//変更箇所
+                    usrdata.caseData = ucpu;//変更箇所
+                    //console.log(usrdata.MemoryData.price)
+                }else{
+                    num -= 1;
+                    var ucpuc = new casec(result[8][num]["price"]);//変更箇所
+                    usrdata.caseData = ucpuc;//変更箇所
+                }
+
+            }
+            function addusrDisplay(info){//変更箇所
+                var nums = info.substr(6);
+                var num = parseInt(nums);
+                if(num==0){
+                    var ucpu = initialdisplay;//変更箇所
+                    usrdata.displayData = ucpu;//変更箇所
+                    //console.log(usrdata.MemoryData.price)
+                }else{
+                    num -= 1;
+                    var ucpuc = new casec(result[9][num]["price"]);//変更箇所
+                    usrdata.displayData = ucpuc;//変更箇所
+                }
+
+            }
+
+            $(document).on("click",".setContentsCPU",function(){
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrCPU(info);
+                    var pr = usrdata.cpuData.price
+                    var menu = document.getElementById("menutitleCPU");
+                    var title = document.getElementById("title1");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });            
+            $(document).on("click",".setContentsCooler",function(){
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrCPUcooler(info);
+                    var menu = document.getElementById("menutitleCPUcooler");
+                    var pr = usrdata.coolerData.price
+                    var title = document.getElementById("title2");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu101").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            $(document).on("click",".setContentsMB",function(){
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrMB(info);
+                    var menu = document.getElementById("menutitleMB");
+                    var pr = usrdata.mbData.price
+                    var title = document.getElementById("title3");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu102").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            $(document).on("click",".setContentsGPU",function(){
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrGPU(info);
+                    var menu = document.getElementById("menutitleGPU");
+                    var pr = usrdata.gpuData.price
+                    var title = document.getElementById("title4");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu103").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            
+            $(document).on("click",".setContentsMemory",function(){
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrMemory(info); //変更箇所
+                    var menu = document.getElementById("menutitleMemory"); //変更箇所
+                    var pr = usrdata.memoryData.price
+                    var title = document.getElementById("title5");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu104").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            $(document).on("click",".setContentsSSD",function(){ //変更箇所
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrSSD(info); //変更箇所
+                    var menu = document.getElementById("menutitleSSD"); //変更箇所
+                    var pr = usrdata.ssdData.price
+                    var title = document.getElementById("title6");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu105").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            $(document).on("click",".setContentsHDD",function(){ //変更箇所
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrHDD(info); //変更箇所
+                    var menu = document.getElementById("menutitleHDD"); //変更箇所
+                    var pr = usrdata.hddData.price
+                    var title = document.getElementById("title7");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu106").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            $(document).on("click",".setContentsPW",function(){ //変更箇所
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrPW(info); //変更箇所
+                    var menu = document.getElementById("menutitlePW"); //変更箇所
+                    var pr = usrdata.pwData.price
+                    var title = document.getElementById("title8");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu107").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            $(document).on("click",".setContentsCase",function(){ //変更箇所
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrCase(info); //変更箇所
+                    var menu = document.getElementById("menutitleCase"); //変更箇所
+                    var pr = usrdata.caseData.price
+                    var title = document.getElementById("title9");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu108").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+            $(document).on("click",".setContentsDisplay",function(){ //変更箇所
+                    var click = $(this).data("name");
+                    var info = $(this).attr("id");
+                    console.log(info)
+                    addusrDisplay(info); //変更箇所
+                    var menu = document.getElementById("menutitleDisplay"); //変更箇所
+                    var pr = usrdata.displayData.price
+                    var title = document.getElementById("title10");
+                    var m = menu.textContent;
+                    var t = title.textContent;
+                    m = m.split(":");
+                    console.log(click)
+                    menu.textContent =  m[0]+": "+ click;
+                    t = t.split(" ")
+                    title.textContent = t[0] + " 価格:" + pr + "円";
+                    
+                    
+                    let parents = $(this).parent().parent();
+                    if($(this).parent().attr("id")!="submit0"){
+                        $(parents).collapse("hide");
+                        var collap = document.getElementById(parents.find("a"));
+                        $(parents.parent().find("#menu109").find("a")).attr("aria-expanded","false");
+                    }
+                    displayALL();
+            });
+
+            function displayALL(){
+                var allprice_ele = document.createElement("p");
+                var price = document.getElementById("allprice");
+                //console.log(usrdata.coolerData.price)
+                var allprices = usrdata.cpuData.price+usrdata.coolerData.price+usrdata.caseData.price+usrdata.displayData.price+usrdata.gpuData.price+usrdata.hddData.price+usrdata.mbData.price+usrdata.memoryData.price+usrdata.pwData.price+usrdata.ssdData.price;
+                price.innerHTML = "総額: "+(allprices).toString() + "円";
+                var watt = document.getElementById("allwatts");
+                watt.innerHTML = "消費電力(目安): " + (usrdata.cpuData.watt+usrdata.gpuData.watt).toString() + "ワット";
+                /*if(usrdata.cpuData.socket!=null&&usrdata.mbData.socket!=null&&usrdata.coolerData.socket!=null){
+
+                }*/
+            }
+
+            $(document).on("click",".searchbuttonCPU",function(){
+                var clearelement = document.getElementById("menu01"); //変更箇所
+                var cleardoc = document.getElementById("submitt1"); //変更箇所
+                var searchele = document.getElementById("searchCPU"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents1") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt1'; //変更箇所
+                        text_element .className = 'contents1'; //変更箇所
+                        linked.textContent = result[0][i]["name"]+"/"+result[0][i]["pricestr"]+"/"+result[0][i]["core"]+result[0][i]["thread"]+"スレッド/"+"クロック:"+result[0][i]["clk"]+"/"+result[0][i]["mxclk"]+"/"+"ソケット:"+result[0][i]["socket"]+"/TDP:"+result[0][i]["watt"];
+                        linked.dataset.name = result[0][i]["name"]+"/"+result[0][i]["pricestr"]+"/"+result[0][i]["core"]+result[0][i]["thread"]+"スレッド/"+"ソケット:"+result[0][i]["socket"]+"/TDP:"+result[0][i]["watt"];
+                        linked.className = "setContentsCPU"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[0][i]["imgurl"]
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu01").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents1") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt1';
+                        text_element .className = 'contents1';
+                        linked.textContent = result[0][i]["name"]+"/"+result[0][i]["pricestr"]+"/"+result[0][i]["core"]+result[0][i]["thread"]+"スレッド/"+"クロック:"+result[0][i]["clk"]+"/"+result[0][i]["mxclk"]+"/"+"ソケット:"+result[0][i]["socket"]+"/TDP:"+result[0][i]["watt"];
+                        linked.dataset.name = result[0][i]["name"]+"/"+result[0][i]["pricestr"]+"/"+result[0][i]["core"]+result[0][i]["thread"]+"スレッド/"+"ソケット:"+result[0][i]["socket"]+"/TDP:"+result[0][i]["watt"];
+                        linked.className = "setContentsCPU";
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[0][i]["imgurl"]
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu01").append(
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                        
+                    }
+                    var clearelement = document.getElementById("menu01"); //変更箇所
+                    var cleardoc = document.getElementById("submitt1"); //変更箇所
+                    var searchele = document.getElementById("searchCPU"); //変更箇所
+                    while(cleardoc){
+                        console.log(1)
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearCPU",function(){ //変更箇所
+                var clearelement = document.getElementById("menu01"); //変更箇所
+                var cleardoc = document.getElementById("submitt1"); //変更箇所
+                var searchele = document.getElementById("searchCPU"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents1") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt1';
+                    text_element .className = 'contents1';
+                    linked.textContent = result[0][i]["name"]+"/"+result[0][i]["pricestr"]+"/"+result[0][i]["core"]+result[0][i]["thread"]+"スレッド/"+"クロック:"+result[0][i]["clk"]+"/"+result[0][i]["mxclk"]+"/"+"ソケット:"+result[0][i]["socket"]+"/TDP:"+result[0][i]["watt"];
+                    linked.dataset.name = result[0][i]["name"]+"/"+result[0][i]["pricestr"]+"/"+result[0][i]["core"]+result[0][i]["thread"]+"スレッド/"+"ソケット:"+result[0][i]["socket"]+"/TDP:"+result[0][i]["watt"];
+                    linked.className = "setContentsCPU";
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[0][i]["imgurl"]
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu01").append(
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+            
+            $(document).on("click",".searchbuttonCooler",function(){
+                var clearelement = document.getElementById("menu02"); //変更箇所
+                var cleardoc = document.getElementById("submitt2"); //変更箇所
+                var searchele = document.getElementById("searchCooler"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents2") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt2'; //変更箇所
+                        text_element .className = 'contents2'; //変更箇所
+                        linked.textContent = result[1][i]["name"];
+                        linked.dataset.name = result[1][i]["name"];
+                        linked.className = "setContentsCooler"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[1][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu02").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents2") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt2'; //変更箇所
+                        text_element .className = 'contents2'; //変更箇所
+                        linked.textContent = result[1][i]["name"];
+                        linked.dataset.name = result[1][i]["name"];
+                        linked.className = "setContentsCooler"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[1][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu02").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                        
+                    }
+                    var clearelement = document.getElementById("menu02"); //変更箇所
+                    var cleardoc = document.getElementById("submitt2"); //変更箇所
+                    var searchele = document.getElementById("searchCooler"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents2") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearCooler",function(){ //変更箇所
+                var clearelement = document.getElementById("menu02"); //変更箇所
+                var cleardoc = document.getElementById("submitt2"); //変更箇所
+                var searchele = document.getElementById("searchCooler"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents2") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt2'; //変更箇所
+                    text_element .className = 'contents2'; //変更箇所
+                    linked.textContent = result[1][i]["name"];
+                    linked.dataset.name = result[1][i]["name"];
+                    linked.className = "setContentsCooler"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[1][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu02").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+
+            $(document).on("click",".searchbuttonMB",function(){ //変更箇所
+                var clearelement = document.getElementById("menu03"); //変更箇所
+                var cleardoc = document.getElementById("submitt3"); //変更箇所
+                var searchele = document.getElementById("searchMB"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents3") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt3'; //変更箇所
+                        text_element .className = 'contents3'; //変更箇所
+                        linked.textContent = result[2][i]["name"];
+                        linked.dataset.name = result[2][i]["name"];
+                        linked.className = "setContentsMB"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[2][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu03").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents3") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt3'; //変更箇所
+                        text_element .className = 'contents3'; //変更箇所
+                        linked.textContent = result[2][i]["name"];
+                        linked.dataset.name = result[2][i]["name"];
+                        linked.className = "setContentsMB"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[2][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu03").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);       
+                    }
+                    var clearelement = document.getElementById("menu03"); //変更箇所
+                    var cleardoc = document.getElementById("submitt3"); //変更箇所
+                    var searchele = document.getElementById("searchMB"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents3") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearMB",function(){ //変更箇所
+                var clearelement = document.getElementById("menu03"); //変更箇所
+                var cleardoc = document.getElementById("submitt3"); //変更箇所
+                var searchele = document.getElementById("searchMB"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents3") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt3'; //変更箇所
+                    text_element .className = 'contents3'; //変更箇所
+                    linked.textContent = result[2][i]["name"];
+                    linked.dataset.name = result[2][i]["name"];
+                    linked.className = "setContentsMB"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[2][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu03").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+        
+            $(document).on("click",".searchbuttonGPU",function(){ //変更箇所
+                var clearelement = document.getElementById("menu04"); //変更箇所
+                var cleardoc = document.getElementById("submitt4"); //変更箇所
+                var searchele = document.getElementById("searchGPU"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents4") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt4'; //変更箇所
+                        text_element .className = 'contents4'; //変更箇所
+                        linked.textContent = result[3][i]["name"];
+                        linked.dataset.name = result[3][i]["name"];
+                        linked.className = "setContentsGPU"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[3][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu04").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents4") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt4'; //変更箇所
+                        text_element .className = 'contents4'; //変更箇所
+                        linked.textContent = result[3][i]["name"];
+                        linked.dataset.name = result[3][i]["name"];
+                        linked.className = "setContentsGPU"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[3][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu04").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);  
+                    }
+                    var clearelement = document.getElementById("menu04"); //変更箇所
+                    var cleardoc = document.getElementById("submitt4"); //変更箇所
+                    var searchele = document.getElementById("searchGPU"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents4") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearGPU",function(){ //変更箇所
+                var clearelement = document.getElementById("menu04"); //変更箇所
+                var cleardoc = document.getElementById("submitt4"); //変更箇所
+                var searchele = document.getElementById("searchGPU"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents4") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt4'; //変更箇所
+                    text_element .className = 'contents4'; //変更箇所
+                    linked.textContent = result[3][i]["name"];
+                    linked.dataset.name = result[3][i]["name"];
+                    linked.className = "setContentsGPU"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[3][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu04").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+            
+            $(document).on("click",".searchbuttonMemory",function(){ //変更箇所
+                var clearelement = document.getElementById("menu05"); //変更箇所
+                var cleardoc = document.getElementById("submitt5"); //変更箇所
+                var searchele = document.getElementById("searchMemory"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents5") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt5'; //変更箇所
+                        text_element .className = 'contents5'; //変更箇所
+                        linked.textContent = result[4][i]["name"];
+                        linked.dataset.name = result[4][i]["name"];
+                        linked.className = "setContentsMemory"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[4][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu05").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents5") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt5'; //変更箇所
+                        text_element .className = 'contents5'; //変更箇所
+                        linked.textContent = result[4][i]["name"];
+                        linked.dataset.name = result[4][i]["name"];
+                        linked.className = "setContentsMemory"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[4][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu05").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                    var clearelement = document.getElementById("menu05"); //変更箇所
+                    var cleardoc = document.getElementById("submitt5"); //変更箇所
+                    var searchele = document.getElementById("searchMemory"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents5") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearMemory",function(){ //変更箇所
+                var clearelement = document.getElementById("menu05"); //変更箇所
+                var cleardoc = document.getElementById("submitt5"); //変更箇所
+                var searchele = document.getElementById("searchMemory"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents5") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt5'; //変更箇所
+                    text_element .className = 'contents5'; //変更箇所
+                    linked.textContent = result[4][i]["name"];
+                    linked.dataset.name = result[4][i]["name"];
+                    linked.className = "setContentsMemory"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[4][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu05").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+
+            $(document).on("click",".searchbuttonSSD",function(){ //変更箇所
+                var clearelement = document.getElementById("menu06"); //変更箇所
+                var cleardoc = document.getElementById("submitt6"); //変更箇所
+                var searchele = document.getElementById("searchSSD"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents6") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt6'; //変更箇所
+                        text_element .className = 'contents6'; //変更箇所
+                        linked.textContent = result[5][i]["name"];
+                        linked.dataset.name = result[5][i]["name"];
+                        linked.className = "setContentsSSD"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[5][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu06").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents6") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt6'; //変更箇所
+                        text_element .className = 'contents6'; //変更箇所
+                        linked.textContent = result[5][i]["name"];
+                        linked.dataset.name = result[5][i]["name"];
+                        linked.className = "setContentsSSD"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[5][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu06").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                    var clearelement = document.getElementById("menu06"); //変更箇所
+                    var cleardoc = document.getElementById("submitt6"); //変更箇所
+                    var searchele = document.getElementById("searchSSD"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents6") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearSSD",function(){ //変更箇所
+                var clearelement = document.getElementById("menu06"); //変更箇所
+                var cleardoc = document.getElementById("submitt6"); //変更箇所
+                var searchele = document.getElementById("searchSSD"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents6") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt6'; //変更箇所
+                    text_element .className = 'contents6'; //変更箇所
+                    linked.textContent = result[5][i]["name"];
+                    linked.dataset.name = result[5][i]["name"];
+                    linked.className = "setContentsSSD"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[5][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu06").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+
+            $(document).on("click",".searchbuttonHDD",function(){ //変更箇所
+                var clearelement = document.getElementById("menu07"); //変更箇所
+                var cleardoc = document.getElementById("submitt7"); //変更箇所
+                var searchele = document.getElementById("searchHDD"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents7") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt7'; //変更箇所
+                        text_element .className = 'contents7'; //変更箇所
+                        linked.textContent = result[6][i]["name"];
+                        linked.dataset.name = result[6][i]["name"];
+                        linked.className = "setContentsHDD"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[6][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu07").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents7") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt7'; //変更箇所
+                        text_element .className = 'contents7'; //変更箇所
+                        linked.textContent = result[6][i]["name"];
+                        linked.dataset.name = result[6][i]["name"];
+                        linked.className = "setContentsHDD"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[6][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu07").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                    var clearelement = document.getElementById("menu07"); //変更箇所
+                    var cleardoc = document.getElementById("submitt7"); //変更箇所
+                    var searchele = document.getElementById("searchHDD"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents7") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearHDD",function(){ //変更箇所
+                var clearelement = document.getElementById("menu07"); //変更箇所
+                var cleardoc = document.getElementById("submitt7"); //変更箇所
+                var searchele = document.getElementById("searchHDD"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents7") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt7'; //変更箇所
+                    text_element .className = 'contents7'; //変更箇所
+                    linked.textContent = result[6][i]["name"];
+                    linked.dataset.name = result[6][i]["name"];
+                    linked.className = "setContentsHDD"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[6][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu07").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+
+            $(document).on("click",".searchbuttonPW",function(){ //変更箇所
+                var clearelement = document.getElementById("menu08"); //変更箇所
+                var cleardoc = document.getElementById("submitt8"); //変更箇所
+                var searchele = document.getElementById("searchPW"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents8") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt8'; //変更箇所
+                        text_element .className = 'contents8'; //変更箇所
+                        linked.textContent = result[7][i]["name"];
+                        linked.dataset.name = result[7][i]["name"];
+                        linked.className = "setContentsPW"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[7][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu08").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents8") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt8'; //変更箇所
+                        text_element .className = 'contents8'; //変更箇所
+                        linked.textContent = result[7][i]["name"];
+                        linked.dataset.name = result[7][i]["name"];
+                        linked.className = "setContentsPW"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[7][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu08").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                    var clearelement = document.getElementById("menu08"); //変更箇所
+                    var cleardoc = document.getElementById("submitt8"); //変更箇所
+                    var searchele = document.getElementById("searchPW"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents8") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearPW",function(){ //変更箇所
+                var clearelement = document.getElementById("menu08"); //変更箇所
+                var cleardoc = document.getElementById("submitt8"); //変更箇所
+                var searchele = document.getElementById("searchPW"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents8") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt8'; //変更箇所
+                    text_element .className = 'contents8'; //変更箇所
+                    linked.textContent = result[7][i]["name"];
+                    linked.dataset.name = result[7][i]["name"];
+                    linked.className = "setContentsPW"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[7][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu08").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+
+            $(document).on("click",".searchbuttonCase",function(){ //変更箇所
+                var clearelement = document.getElementById("menu09"); //変更箇所
+                var cleardoc = document.getElementById("submitt9"); //変更箇所
+                var searchele = document.getElementById("searchCase"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents9") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt9'; //変更箇所
+                        text_element .className = 'contents9'; //変更箇所
+                        linked.textContent = result[8][i]["name"];
+                        linked.dataset.name = result[8][i]["name"];
+                        linked.className = "setContentsCase"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[8][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu09").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents9") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt9'; //変更箇所
+                        text_element .className = 'contents9'; //変更箇所
+                        linked.textContent = result[8][i]["name"];
+                        linked.dataset.name = result[8][i]["name"];
+                        linked.className = "setContentsCase"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[8][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu09").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                    var clearelement = document.getElementById("menu09"); //変更箇所
+                    var cleardoc = document.getElementById("submitt9"); //変更箇所
+                    var searchele = document.getElementById("searchCase"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents9") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearCase",function(){ //変更箇所
+                var clearelement = document.getElementById("menu09"); //変更箇所
+                var cleardoc = document.getElementById("submitt9"); //変更箇所
+                var searchele = document.getElementById("searchCase"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents9") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt9'; //変更箇所
+                    text_element .className = 'contents9'; //変更箇所
+                    linked.textContent = result[8][i]["name"];
+                    linked.dataset.name = result[8][i]["name"];
+                    linked.className = "setContentsCase"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[8][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu09").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+
+            $(document).on("click",".searchbuttonMT",function(){ //変更箇所
+                var clearelement = document.getElementById("menu10"); //変更箇所
+                var cleardoc = document.getElementById("submitt10"); //変更箇所
+                var searchele = document.getElementById("searchMT"); //変更箇所
+                const searchword = searchele.value;
+                if(searchword==""){
+                    while(cleardoc){
+                        if(cleardoc.className!="contents10") break; //変更箇所
+                        //if(!cleardoc) break;
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt10'; //変更箇所
+                        text_element .className = 'contents10'; //変更箇所
+                        linked.textContent = result[9][i]["name"];
+                        linked.dataset.name = result[9][i]["name"];
+                        linked.className = "setContentsMT"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[9][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu10").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                }else{
+                    while(cleardoc){
+                        if(cleardoc.className!="contents10") break; //変更箇所
+                        var tmp = cleardoc.nextElementSibling;
+                        clearelement.removeChild(cleardoc);
+                        cleardoc = tmp;
+                    }
+                    for(let i=0;i<result[0].length;i++){ //前の項目と同じにする
+                        var text_element = document.createElement('li');
+                        let linked = document.createElement('button');
+                        text_element .id = 'submitt10'; //変更箇所
+                        text_element .className = 'contents10'; //変更箇所
+                        linked.textContent = result[9][i]["name"];
+                        linked.dataset.name = result[9][i]["name"];
+                        linked.className = "setContentsMT"; //変更箇所
+                        linked.src = result["imgurl"];
+                        linked.id = 'submit'+i
+                        var img_element = document.createElement('img');
+                        img_element.id = "image"
+                        img_element.src = result[9][i]["imgurl"] //変更箇所
+                        img_element.alt = "No Image"
+                        img_element.width = 50
+                        img_element.height = 50
+                        $("#menu10").append( //変更箇所
+                            $(text_element).append(linked)
+                        );
+                        linked.append(img_element);
+                    }
+                    var clearelement = document.getElementById("menu10"); //変更箇所
+                    var cleardoc = document.getElementById("submitt10"); //変更箇所
+                    var searchele = document.getElementById("searchMT"); //変更箇所
+                    while(cleardoc){
+                        console.log(searchword)
+                        if(cleardoc.className!="contents10") break; //変更箇所
+                        var txtt = cleardoc.textContent
+                        if(txtt.toLowerCase().indexOf(searchword.toLowerCase())!=-1){
+                            if(cleardoc) console.log(cleardoc.textContent);
+                            cleardoc = cleardoc.nextElementSibling;
+                        }else{
+                            var tmp = cleardoc.nextElementSibling;
+                            clearelement.removeChild(cleardoc);
+                            cleardoc = tmp;
+                        }
+                    }
+                }
+
+            });
+            $(document).on("click",".clearMT",function(){ //変更箇所
+                var clearelement = document.getElementById("menu10"); //変更箇所
+                var cleardoc = document.getElementById("submitt10"); //変更箇所
+                var searchele = document.getElementById("searchMT"); //変更箇所
+                searchele.value="";
+                while(cleardoc){
+                    if(cleardoc.className!="contents10") break; //変更箇所
+                    var tmp = cleardoc.nextElementSibling;
+                    clearelement.removeChild(cleardoc);
+                    cleardoc = tmp;
+                }
+                for(let i=0;i<result[0].length;i++){ //前の項と同じにする
+                    var text_element = document.createElement('li');
+                    let linked = document.createElement('button');
+                    text_element .id = 'submitt10'; //変更箇所
+                    text_element .className = 'contents10'; //変更箇所
+                    linked.textContent = result[9][i]["name"];
+                    linked.dataset.name = result[9][i]["name"];
+                    linked.className = "setContentsMT"; //変更箇所
+                    linked.src = result["imgurl"];
+                    linked.id = 'submit'+i
+                    var img_element = document.createElement('img');
+                    img_element.id = "image"
+                    img_element.src = result[9][i]["imgurl"] //変更箇所
+                    img_element.alt = "No Image"
+                    img_element.width = 50
+                    img_element.height = 50
+                    $("#menu10").append( //変更箇所
+                        $(text_element).append(linked)
+                    );
+                    linked.append(img_element);
+                }
+            });
+
+        </script>
+        <header>
+           
+            <h1><a href="/Jisaku/pages"><img src = "{% static 'img/header.gif' %}" alt="自作PC作成計画"></a></h1>
+            <nav>
+                <h1><a href="/Jisaku/usage">サイトの使い方</a></h1>
+            </nav>
+        </header>
+        <main class="main">
+
+            <ul id="accordion_menu">
+                <li id = "menu">
+                    <div class="titlea" id ="title1"><a href="https://kakaku.com/pc/cpu/">CPU 価格:0円</a></div>
+                    <a data-toggle="collapse" href="#menu01" aria-controls="#menu01" aria-expanded="false" id = "menutitleCPU">CPU: 選択してください</a>
+                </li>
+                <ul id="menu01" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchCPU" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonCPU">検索</button>
+                        <button type="button" class="clearCPU">検索条件をクリア</button>
+                    </div>
+                </ul>
+
+                <li id="menu101">
+                    <div class="titlea" id ="title2"><a href="https://kakaku.com/pc/cpu-cooler/">CPUクーラー 価格:0円</a></div>
+                    <a data-toggle="collapse" href="#menu02" aria-controls="#menu02" aria-expanded="false" id = "menutitleCPUcooler">CPUクーラー: 選択してください</a>
+                </li>
+                <ul id="menu02" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchCooler" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonCooler">検索</button>
+                        <button type="button" class="clearCooler">検索条件をクリア</button>
+                    </div>
+                </ul>
+
+                <li id="menu102">
+                    <div class="titlea" id ="title3"><a href="https://kakaku.com/pc/motherboard/">マザーボード 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu03" aria-controls="#menu03" aria-expanded="false"id = "menutitleMB">マザーボード: 選択してください</a>
+                </li>
+                <ul id="menu03" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchMB" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonMB">検索</button>
+                        <button type="button" class="clearMB">検索条件をクリア</button>
+                    </div>
+                </ul>
+                <li id="menu103">
+                    <div class="titlea" id ="title4"><a href="https://kakaku.com/pc/videocard/">グラフィックカード 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu04" aria-controls="#menu04" aria-expanded="false"id = "menutitleGPU">グラフィックカード: 選択してください</a>
+                </li>
+                <ul id="menu04" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchGPU" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonGPU">検索</button>
+                        <button type="button" class="clearGPU">検索条件をクリア</button>
+                    </div>
+                    </div>
+                </ul>
+                <li id="menu104">
+                    <div class="titlea" id ="title5"><a href="https://kakaku.com/pc/pc-memory/">メモリ 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu05" aria-controls="#menu05" aria-expanded="false"id = "menutitleMemory">メモリ: 選択してください</a>
+                </li>
+                <ul id="menu05" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchMemory" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonMemory">検索</button>
+                        <button type="button" class="clearMemory">検索条件をクリア</button>
+                    </div>
+                </ul>
+
+                <li id="menu105">
+                    <div class="titlea" id ="title6"><a href="https://kakaku.com/pc/ssd/">SSD 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu06" aria-controls="#menu06" aria-expanded="false"id = "menutitleSSD">SSD: 選択してください</a>
+                </li>
+                <ul id="menu06" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchSSD" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonSSD">検索</button>
+                        <button type="button" class="clearSSD">検索条件をクリア</button>
+                    </div>
+                </ul>
+
+                <li id="menu106">
+                    <div class="titlea" id ="title7"><a href="https://kakaku.com/pc/hdd-35inch/">HDD 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu07" aria-controls="#menu07" aria-expanded="false"id = "menutitleHDD">HDD: 選択してください</a>
+                </li>
+                <ul id="menu07" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchHDD" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonHDD">検索</button>
+                        <button type="button" class="clearHDD">検索条件をクリア</button>
+                    </div>
+                </ul>
+
+                <li id="menu107">
+                    <div class="titlea" id ="title8"><a href="https://kakaku.com/pc/power-supply/">電源 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu08" aria-controls="#menu08" aria-expanded="false"id = "menutitlePW">電源: 選択してください</a>
+                </li>
+                <ul id="menu08" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchPW" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonPW">検索</button>
+                        <button type="button" class="clearPW">検索条件をクリア</button>
+                    </div>
+                </ul>
+
+                <li id="menu108">
+                    <div class="titlea" id ="title9"><a href="https://kakaku.com/pc/pc-case/">PCケース 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu09" aria-controls="#menu09" aria-expanded="false"id = "menutitleCase">PCケース: 選択してください</a>
+                </li>
+                <ul id="menu09" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchCase" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonCase">検索</button>
+                        <button type="button" class="clearCase">検索条件をクリア</button>
+                    </div>
+                </ul>
+
+                <li id="menu109">
+                    <div class="titlea" id ="title10"><a href="https://kakaku.com/pc/lcd-monitor/">モニター 価格:0円</a></div>
+                      <a data-toggle="collapse" href="#menu10" aria-controls="#menu10" aria-expanded="false"id = "menutitleDisplay">モニター: 選択してください</a>
+                </li>
+                <ul id="menu10" class="collapse" data-parent="#accordion_menu">
+                    <div class="LinkHeader">
+                        <div>
+                            <input id ="searchMT" type="search" name="s" placeholder="キーワードを入力">
+                        </div>
+                        <button type="submit" class="searchbuttonMT">検索</button>
+                        <button type="button" class="clearMT">検索条件をクリア</button>
+                    </div>
+                </ul>
+            </ul>
+
+            <div class="all">
+                <br></br>
+                <p id="allprice">総額: </p>
+                <p id="allwatts">消費電力(目安): </p>
+                <p id="socket">ソケット適合: (実装中)</p>
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+    <footer>
+        <h1>Webページについて何かあればTwitter <a href="https://twitter.com/Geforce_rtx_">@Geforce_RTX_</a>まで</h1>
+    </footer>
+</html>
